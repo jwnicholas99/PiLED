@@ -2,6 +2,8 @@ from rpi_ws281x import Color, PixelStrip, ws
 import time
 import argparse
 
+from utils.moodlights import Moodlights
+
 
 # LED strip configuration:
 LED_FREQ_HZ = 800000   # LED signal frequency in hertz (usually 800khz)
@@ -10,31 +12,12 @@ LED_BRIGHTNESS = 10   # Set to 0 for darkest and 255 for brightest
 LED_INVERT = False     # True to invert the signal (when using NPN transistor level shift)
 LED_CHANNEL = 0
 
-def colorWipe(strip, color, wait_ms=50):
-    """Wipe color across display a pixel at a time."""
-    for i in range(strip.numPixels()):
-        strip.setPixelColor(i, color)
-        strip.show()
-        time.sleep(wait_ms/1000.0)
-
-def pulse(strip, wait_ms=2):
-    is_increasing = strip.getBrightness() < 255
-
-    while True:
-        if is_increasing:
-            next_brightness = strip.getBrightness() + 1
-            is_increasing = next_brightness != 255
-        else:
-            next_brightness = strip.getBrightness() - 1
-            is_increasing = next_brightness == 0
-
-        strip.setBrightness(next_brightness)
-        time.sleep(wait_ms /1000.0)
-        strip.show()
 
 def set_mood(mood, strip):
     if mood=="happy":
         pulse(strip, 5)
+    elif mood=="sad":
+        wave(strip, Color(0, 150, 50), 100, 0)
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description="Control some LEDs")
@@ -44,10 +27,9 @@ if __name__=="__main__":
     parser.add_argument("--mood", type=str, help="Mood to set the lights to")
     args = parser.parse_args()
 
-    # Create NeoPixel object with appropriate configuration.
-    strip = PixelStrip(args.led_count, args.led_pin, LED_FREQ_HZ, LED_DMA, LED_INVERT, args.led_brightness, LED_CHANNEL)
-    strip.begin()
-
-    colorWipe(strip, Color(0, 150, 50))
-
-    set_mood(args.mood, strip)
+    # Create a Moodlight object
+    moodlights = Moodlights(args.led_count, args.led_pin, LED_FREQ_HZ, LED_DMA, LED_INVERT, args.led_brightness, LED_CHANNEL)
+    moodlights.wave(255, 30, 60, 255, spread=7)
+    moodlights.wave(255, 30, 60, 255, spread=7, is_reverse=True)
+    moodlights.color_wipe(255, 30, 60)
+    moodlights.pulse()

@@ -39,7 +39,6 @@ class Pixel():
         new_b = int(cur_color.b * factor)
 
         self.strip.setPixelColorRGB(self.pixel_num, new_r, new_g, new_b)
-        self.strip.show()
 
     def change_brightness(self, intensity):
         """
@@ -55,5 +54,10 @@ class Pixel():
             new_brightness = 0
 
         self.set_brightness(new_brightness)
-        self.strip.show()
+
+    def get_colorRGB(self):
+        return self.strip.getPixelColorRGB(self.pixel_num)
+
+    def set_colorRGB(self, r, g, b):
+        self.strip.setPixelColorRGB(self.pixel_num, r, g, b)
         
