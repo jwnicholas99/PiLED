@@ -42,10 +42,18 @@ class Moodlights():
             self.strip.show()
             time.sleep(wait_ms/1000.0)
 
-    def pulse(self, wait_ms=2):
-        is_increasing = self.strip.getBrightness() < 255
+    def pulse(self, iterations=0, wait_ms=2):
+        """
+        params:
 
-        while True:
+        iteration: number of pulses (0 means infinite)
+        wait_ms: wait time before changing brightness by 1/255 of max brightness
+        """
+        is_increasing = self.strip.getBrightness() < 255
+        is_infinite = iterations == 0
+
+        i = 0
+        while is_infinite or i < iterations * 256 * 2:
             if is_increasing:
                 next_brightness = self.strip.getBrightness() + 1
                 is_increasing = next_brightness != 255
@@ -56,6 +64,7 @@ class Moodlights():
             self.strip.setBrightness(next_brightness)
             time.sleep(wait_ms /1000.0)
             self.strip.show()
+            i += 1
 
     def wave(self, colors, intensity, wait_ms=50, spread=0, is_reverse=False):
         """
@@ -93,3 +102,35 @@ class Moodlights():
             self.strip.show()
 
             time.sleep(wait_ms / 1000.0)
+
+    def wheel(self, pos):
+        if pos < 85:
+            return Color(pos * 3, 255 - pos * 3, 0)
+        elif pos < 170:
+            pos -= 85
+            return Color(255 - pos * 3, 0, pos * 3)
+        else:
+            pos -= 170
+            return Color(0, pos * 3, 255 - pos * 3)
+
+    def rainbow_cycle(self, iterations=0, wait_ms=160):
+        is_infinite = iterations == 0
+
+        j = 0
+        while is_infinite or j < iterations * 256:
+            for i in range(self.strip.numPixels()):
+                self.strip.setPixelColor(i, self.wheel((i + j) & 255))
+            self.strip.show()
+            j += 1
+            time.sleep(wait_ms / 1000)
+
+    def rainbow_chase(self, wait_ms=100):
+        for j in range(256):
+            for q in range(3):
+                for i in range(0, self.strip.numPixels(), 3):
+                    self.strip.setPixelColor(i + q, self.wheel((i + j) % 255))
+                self.strip.show()
+                time.sleep(wait_ms / 1000)
+                for i in range(0, self.strip.numPixels(), 3):
+                    self.strip.setPixelColor(i + q, 0)
+        

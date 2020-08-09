@@ -13,11 +13,28 @@ LED_INVERT = False     # True to invert the signal (when using NPN transistor le
 LED_CHANNEL = 0
 
 
-def set_mood(mood, strip):
+def get_mood_colors(mood):
     if mood=="happy":
-        pulse(strip, 5)
-    elif mood=="sad":
-        wave(strip, Color(0, 150, 50), 100, 0)
+        return [
+            Color(1, 190, 254),
+            Color(255, 221, 0),
+            Color(255, 125, 0),
+            Color(255, 0, 109),
+            Color(173, 255, 2),
+            Color(143, 0, 255)
+        ]
+    elif mood=="excited":
+        return [
+            Color(255, 221, 0),
+            Color(255, 70, 0),
+        ]
+    elif mood=="romantic":
+        return [
+            Color(255, 30, 30),
+            Color(255, 0, 109),
+            Color(240, 85, 88),
+            Color(249, 226, 220)
+        ]
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description="Control some LEDs")
@@ -29,14 +46,12 @@ if __name__=="__main__":
 
     # Create a Moodlight object
     moodlights = Moodlights(args.led_count, args.led_pin, LED_FREQ_HZ, LED_DMA, LED_INVERT, args.led_brightness, LED_CHANNEL)
-    #moodlights.wave(255, 30, 60, 255, spread=7)
-    #moodlights.wave(255, 30, 60, 255, spread=7, is_reverse=True)
-    colors = [
-        Color(255, 30, 60),
-        Color(0, 255, 0),
-        Color(255, 255, 0)
-    ]
+    moodlights.rainbow_chase()
+    moodlights.rainbow_cycle()
+
+    colors = get_mood_colors(args.mood)
     moodlights.wave(colors, 255, spread=7)
     moodlights.wave(colors, 255, spread=7, is_reverse=True)
     moodlights.color_wipe(colors, 100)
     moodlights.pulse()
+    moodlights.all_pixels_off()
