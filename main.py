@@ -36,7 +36,16 @@ def get_mood_colors(mood):
             Color(249, 226, 220)
         ]
 
-if __name__=="__main__":
+def print_menu():
+    print("What LED pattern would you like to display?")
+    print("1. Default")
+    print("2. ColorWipe")
+    print("3. Pulse")
+    print("4. Wave")
+    print("5. Rainbow Cycle")
+    print("6. Rainbow Chase")
+
+if  __name__=="__main__":
     parser = argparse.ArgumentParser(description="Control some LEDs")
     parser.add_argument("--led_count", type=int, default=30, help="Number of LED pixels")
     parser.add_argument("--led_pin", type=int, help="GPIO pin connected to the pixels")
@@ -46,12 +55,29 @@ if __name__=="__main__":
 
     # Create a Moodlight object
     moodlights = Moodlights(args.led_count, args.led_pin, LED_FREQ_HZ, LED_DMA, LED_INVERT, args.led_brightness, LED_CHANNEL)
-    moodlights.rainbow_chase()
-    moodlights.rainbow_cycle()
 
-    colors = get_mood_colors(args.mood)
-    moodlights.wave(colors, 255, spread=7)
-    moodlights.wave(colors, 255, spread=7, is_reverse=True)
-    moodlights.color_wipe(colors, 100)
-    moodlights.pulse()
-    moodlights.all_pixels_off()
+    # Ask for user input
+    while True:
+        print_menu()
+        option = input("")
+
+        colors = get_mood_colors(args.mood)
+        if option == 1:
+            moodlights.wave(colors, 255, spread=7)
+            moodlights.wave(colors, 255, spread=7, is_reverse=True)
+            moodlights.color_wipe(colors, 100)
+            moodlights.pulse(5)
+            moodlights.all_pixels_off()
+        elif option == 2:
+            moodlights.color_wipe(colors, 100)
+        elif option == 3:
+            moodlights.pulse(5)
+        elif option == 4:
+            moodlights.wave(colors, 255, spread=7)
+        elif option == 5:
+            moodlights.rainbow_cycle()
+        elif option == 6:
+            moodlights.rainbow_chase()
+
+
+
