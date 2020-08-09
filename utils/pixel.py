@@ -58,6 +58,6 @@ class Pixel():
     def get_colorRGB(self):
         return self.strip.getPixelColorRGB(self.pixel_num)
 
-    def set_colorRGB(self, r, g, b):
-        self.strip.setPixelColorRGB(self.pixel_num, r, g, b)
+    def set_color(self, color):
+        self.strip.setPixelColor(self.pixel_num, color)
         

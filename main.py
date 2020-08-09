@@ -29,7 +29,14 @@ if __name__=="__main__":
 
     # Create a Moodlight object
     moodlights = Moodlights(args.led_count, args.led_pin, LED_FREQ_HZ, LED_DMA, LED_INVERT, args.led_brightness, LED_CHANNEL)
-    moodlights.wave(255, 30, 60, 255, spread=7)
-    moodlights.wave(255, 30, 60, 255, spread=7, is_reverse=True)
-    moodlights.color_wipe(255, 30, 60)
+    #moodlights.wave(255, 30, 60, 255, spread=7)
+    #moodlights.wave(255, 30, 60, 255, spread=7, is_reverse=True)
+    colors = [
+        Color(255, 30, 60),
+        Color(0, 255, 0),
+        Color(255, 255, 0)
+    ]
+    moodlights.wave(colors, 255, spread=7)
+    moodlights.wave(colors, 255, spread=7, is_reverse=True)
+    moodlights.color_wipe(colors, 100)
     moodlights.pulse()

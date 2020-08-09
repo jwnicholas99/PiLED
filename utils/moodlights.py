@@ -29,10 +29,16 @@ class Moodlights():
             pixel.switch_off()
         self.strip.show()
 
-    def color_wipe(self, r, g, b, wait_ms=0):
-        """Wipe color across display a pixel at a time."""
-        for pixel in self.pixels:
-            pixel.set_colorRGB(r, g, b)
+    def color_wipe(self, colors, wait_ms=0):
+        """
+        params:
+
+        colors: sequence of colors to display
+        wait_ms: wait time between each pixel (0 for instant)
+        """
+        for i in range(self.led_count):
+            pixel = self.pixels[i]
+            pixel.set_color(colors[i % len(colors)])
             self.strip.show()
             time.sleep(wait_ms/1000.0)
 
@@ -51,11 +57,11 @@ class Moodlights():
             time.sleep(wait_ms /1000.0)
             self.strip.show()
 
-    def wave(self, r, g, b, intensity, wait_ms=50, spread=0, is_reverse=False):
+    def wave(self, colors, intensity, wait_ms=50, spread=0, is_reverse=False):
         """
         params:
 
-        r, g, b: Red, Green and Blue
+        colors: sequence of colors to display
         intensity: brightness of the crest (from 0 to 255)
         wait_ms: wait time before the crest of the wave shifts
         spread: how many pixels away from the crest will be lighted up
@@ -67,17 +73,17 @@ class Moodlights():
 
         for i in led_iteration:
             if self.in_range(i):
-                self.pixels[i].set_colorRGB(r, g, b)
+                self.pixels[i].set_color(colors[i % len(colors)])
                 self.pixels[i].set_brightness(intensity)
 
             for j in range(1, spread+1):
                 brightness = int(abs(intensity - intensity_interval * j))
 
                 if self.in_range(i-j):
-                    self.pixels[i-j].set_colorRGB(r, g, b)
+                    self.pixels[i-j].set_color(colors[(i-j) % len(colors)])
                     self.pixels[i-j].set_brightness(brightness)
                 if self.in_range(i+j):
-                    self.pixels[i+j].set_colorRGB(r, g, b)
+                    self.pixels[i+j].set_color(colors[(i+j) % len(colors)])
                     self.pixels[i+j].set_brightness(brightness)
             
             if self.in_range(i - spread - 1):
