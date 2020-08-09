@@ -19,10 +19,13 @@ class Moodlights():
     def in_range(self, led_num):
         return led_num >= 0 and led_num < self.led_count
 
-    def signal_handler(self, sig, frame):
-        print("You pressed Ctrl-C! Exiting...")
+    def shutdown(self):
         self.all_pixels_off()
         sys.exit()
+
+    def signal_handler(self, sig, frame):
+        print("You pressed Ctrl-C! Exiting...")
+        self.shutdown()
             
     def all_pixels_off(self):
         for pixel in self.pixels:
@@ -124,8 +127,11 @@ class Moodlights():
             j += 1
             time.sleep(wait_ms / 1000)
 
-    def rainbow_chase(self, wait_ms=100):
-        for j in range(256):
+    def rainbow_chase(self, iterations=0, wait_ms=100):
+        is_infinite = iterations == 0
+
+        j = 0
+        while is_infinite or j < iterations * 256:
             for q in range(3):
                 for i in range(0, self.strip.numPixels(), 3):
                     self.strip.setPixelColor(i + q, self.wheel((i + j) % 255))
@@ -133,4 +139,5 @@ class Moodlights():
                 time.sleep(wait_ms / 1000)
                 for i in range(0, self.strip.numPixels(), 3):
                     self.strip.setPixelColor(i + q, 0)
+            j += 1
         
