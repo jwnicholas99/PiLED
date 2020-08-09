@@ -14,6 +14,7 @@ LED_CHANNEL = 0
 
 
 def get_mood_colors(mood):
+    mood = mood.lower()
     if mood=="happy":
         return [
             Color(1, 190, 254),
@@ -48,7 +49,7 @@ def print_menu(is_construction=False):
         print("e: End sequence")
     else:
         print("6. Construct your own")
-        print("d. Default")
+        print("m. Mood")
         print("s. Shutdown")
     print("")
 
@@ -107,7 +108,7 @@ def action(option, args=None, is_construction=False):
             return args
         moodlights.rainbow_cycle(**args)
 
-    elif option == "5":
+    elif option == "5" :
         if args is None:
             args = {"iterations": 0, 
                     "wait_ms": 0}
@@ -118,7 +119,7 @@ def action(option, args=None, is_construction=False):
             return args
         moodlights.rainbow_chase(**args)
 
-    elif option == "6":
+    elif option == "6" and not is_construction:
         cur_seq_option = ""
         seq = []
         seq_args = []
@@ -138,14 +139,23 @@ def action(option, args=None, is_construction=False):
                 action(seq[i], seq_args[i])
             cur_iteration += 1
 
-    elif option == "d":
-        moodlights.wave(colors, 255, spread=7)
-        moodlights.wave(colors, 255, spread=7, is_reverse=True)
-        moodlights.color_wipe(colors, 100)
-        moodlights.pulse(5)
-        moodlights.all_pixels_off()
+    elif option == "m" and not is_construction:
+        mood = raw_input("Mood (Happy, Excited, Romantic): ")
+        colors = get_mood_colors(mood)
 
-    elif option == "s":
+        iterations = int(raw_input("Num iterations in mood sequence: "))
+        is_infinite = iterations == 0
+        cur_iteration = 0
+
+        while is_infinite or cur_iteration < iterations:
+            moodlights.wave(colors, 255, spread=7)
+            moodlights.wave(colors, 255, spread=7, is_reverse=True)
+            moodlights.color_wipe(colors, 100)
+            moodlights.pulse(3)
+            cur_iteration += 1
+
+
+    elif option == "s" and not is_construction:
         moodlights.shutdown()
 
     else: 
@@ -157,7 +167,6 @@ if  __name__=="__main__":
     parser.add_argument("--led_count", type=int, default=30, help="Number of LED pixels")
     parser.add_argument("--led_pin", type=int, help="GPIO pin connected to the pixels")
     parser.add_argument("--led_brightness", type=int, help="Brightness of pixels (between 0 and 255)")
-    parser.add_argument("--mood", type=str, help="Mood to set the lights to")
     args = parser.parse_args()
 
     # Create a Moodlight object
@@ -167,9 +176,4 @@ if  __name__=="__main__":
     while True:
         print_menu()
         option = raw_input("Option: ")
-
-        colors = get_mood_colors(args.mood)
         action(option)
-        
-
-
