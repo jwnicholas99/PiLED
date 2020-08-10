@@ -2,6 +2,7 @@ from rpi_ws281x import Color, PixelStrip, ws
 import time
 import argparse
 import tkinter as tk
+from ttkthemes import ThemedTk
 
 from utils.moodlights import Moodlights
 from utils.gui import GUI
@@ -176,7 +177,7 @@ if  __name__=="__main__":
     moodlights = Moodlights(args.led_count, args.led_pin, LED_FREQ_HZ, LED_DMA, LED_INVERT, args.led_brightness, LED_CHANNEL)
 
     if args.use_gui:
-        root = tk.Tk()
+        root = ThemedTk(theme="arc")
         gui = GUI(root, moodlights)
         root.mainloop()
     else:
