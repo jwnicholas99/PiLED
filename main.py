@@ -54,7 +54,7 @@ def print_menu(is_construction=False):
     print("")
 
 def ask_colors(args):
-    colors = raw_input("Colors (comma separated - eg 255 255 255, 70 10 0): ").split(",")
+    colors = input("Colors (comma separated - eg 255 255 255, 70 10 0): ").split(",")
     for color in colors:
         rgb = [int(x) for x in color.split()]
         args['colors'].append(Color(*rgb))
@@ -65,7 +65,7 @@ def action(option, args=None, is_construction=False):
             args = {"colors": [], 
                     "wait_ms": 0}
             ask_colors(args)
-            args["wait_ms"] = int(raw_input("wait_ms for Color Wipe: "))
+            args["wait_ms"] = int(input("wait_ms for Color Wipe: "))
 
         if is_construction:
             return args
@@ -73,8 +73,9 @@ def action(option, args=None, is_construction=False):
 
     elif option == "2":
         if args is None:
-            args = {"iterations": 0} 
-            args["iterations"] = int(raw_input("Num of iterations for Pulse (0 is infinite): "))
+            args = {"iterations": 0, "wait_ms": 0} 
+            args["iterations"] = int(input("Num of iterations for Pulse (0 is infinite): "))
+            args["wait_ms"] = int(input("wait_ms for pulse: "))
 
         if is_construction:
             return args
@@ -88,10 +89,10 @@ def action(option, args=None, is_construction=False):
                     "spread": 0,
                     "is_reverse": False}
             ask_colors(args)
-            args["wait_ms"] = int(raw_input("wait_ms for Wave: "))
-            args["intensity"] = int(raw_input("Intensity of wave (between 0 and 255): "))
-            args["spread"] = int(raw_input("spread for wave: "))
-            args["is_reverse"] = raw_input("is_reverse for wave (True or False): ") == "True"
+            args["wait_ms"] = int(input("wait_ms for Wave: "))
+            args["intensity"] = int(input("Intensity of wave (between 0 and 255): "))
+            args["spread"] = int(input("spread for wave: "))
+            args["is_reverse"] = input("is_reverse for wave (True or False): ") == "True"
 
         if is_construction:
             return args
@@ -101,8 +102,8 @@ def action(option, args=None, is_construction=False):
         if args is None:
             args = {"iterations": 0, 
                     "wait_ms": 0}
-            args["iterations"] = int(raw_input("Num of iterations for Rainbow Cycle: "))
-            args["wait_ms"] = int(raw_input("wait_ms for Rainbow Cycle: "))
+            args["iterations"] = int(input("Num of iterations for Rainbow Cycle: "))
+            args["wait_ms"] = int(input("wait_ms for Rainbow Cycle: "))
 
         if is_construction:
             return args
@@ -112,8 +113,8 @@ def action(option, args=None, is_construction=False):
         if args is None:
             args = {"iterations": 0, 
                     "wait_ms": 0}
-            args["iterations"] = int(raw_input("Num of iterations for Rainbow Cycle: "))
-            args["wait_ms"] = int(raw_input("wait_ms for Rainbow Cycle: "))
+            args["iterations"] = int(input("Num of iterations for Rainbow Chase: "))
+            args["wait_ms"] = int(input("wait_ms for Rainbow Chase: "))
 
         if is_construction:
             return args
@@ -125,12 +126,12 @@ def action(option, args=None, is_construction=False):
         seq_args = []
         while cur_seq_option != "e":
             print_menu(is_construction=True)
-            cur_seq_option = raw_input("Construction Option: ")
+            cur_seq_option = input("Construction Option: ")
             if cur_seq_option != "e":
                 seq.append(cur_seq_option)
                 seq_args.append(action(cur_seq_option, is_construction=True))
 
-        iterations = int(raw_input("Num iterations of constructed sequence (infinite if 0): "))
+        iterations = int(input("Num iterations of constructed sequence (infinite if 0): "))
         is_infinite = iterations == 0
         cur_iteration = 0
 
@@ -140,10 +141,10 @@ def action(option, args=None, is_construction=False):
             cur_iteration += 1
 
     elif option == "m" and not is_construction:
-        mood = raw_input("Mood (Happy, Excited, Romantic): ")
+        mood = input("Mood (Happy, Excited, Romantic): ")
         colors = get_mood_colors(mood)
 
-        iterations = int(raw_input("Num iterations in mood sequence: "))
+        iterations = int(input("Num iterations in mood sequence: "))
         is_infinite = iterations == 0
         cur_iteration = 0
 
@@ -172,8 +173,8 @@ if  __name__=="__main__":
     # Create a Moodlight object
     moodlights = Moodlights(args.led_count, args.led_pin, LED_FREQ_HZ, LED_DMA, LED_INVERT, args.led_brightness, LED_CHANNEL)
 
-    # Ask for user raw_input
+    # Ask for user input
     while True:
         print_menu()
-        option = raw_input("Option: ")
+        option = input("Option: ")
         action(option)

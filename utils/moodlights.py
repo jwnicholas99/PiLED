@@ -79,7 +79,7 @@ class Moodlights():
         spread: how many pixels away from the crest will be lighted up
         """
         intensity_interval = float(intensity / (spread + 1))
-        led_iteration = range(-1 - spread, self.strip.numPixels() + spread + 1)
+        led_iteration = list(range(-1 - spread, self.strip.numPixels() + spread + 1))
         if is_reverse:
             led_iteration.reverse()
 
@@ -125,7 +125,7 @@ class Moodlights():
                 self.strip.setPixelColor(i, self.wheel((i + j) & 255))
             self.strip.show()
             j += 1
-            time.sleep(wait_ms / 1000)
+            time.sleep(wait_ms / 1000.0)
 
     def rainbow_chase(self, iterations=0, wait_ms=100):
         is_infinite = iterations == 0
@@ -136,7 +136,7 @@ class Moodlights():
                 for i in range(0, self.strip.numPixels(), 3):
                     self.strip.setPixelColor(i + q, self.wheel((i + j) % 255))
                 self.strip.show()
-                time.sleep(wait_ms / 1000)
+                time.sleep(wait_ms / 1000.0)
                 for i in range(0, self.strip.numPixels(), 3):
                     self.strip.setPixelColor(i + q, 0)
             j += 1
