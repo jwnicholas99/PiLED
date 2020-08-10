@@ -66,8 +66,10 @@ def action(option, args=None, is_construction=False):
     if option == "1":
         if args is None:
             args = {"colors": [], 
+                    "iterations": 0,
                     "wait_ms": 0}
             ask_colors(args)
+            args["iterations"] = int(input("Num of iterations for Color Wipe (0 is infinite): "))
             args["wait_ms"] = int(input("wait_ms for Color Wipe: "))
 
         if is_construction:
@@ -76,7 +78,8 @@ def action(option, args=None, is_construction=False):
 
     elif option == "2":
         if args is None:
-            args = {"iterations": 0, "wait_ms": 0} 
+            args = {"iterations": 0, 
+                    "wait_ms": 0} 
             args["iterations"] = int(input("Num of iterations for Pulse (0 is infinite): "))
             args["wait_ms"] = int(input("wait_ms for pulse: "))
 

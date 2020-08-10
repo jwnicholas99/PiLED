@@ -32,18 +32,24 @@ class Moodlights():
             pixel.switch_off()
         self.strip.show()
 
-    def color_wipe(self, colors, wait_ms=0):
+    def color_wipe(self, colors, iterations=0, wait_ms=0):
         """
         params:
 
         colors: sequence of colors to display
         wait_ms: wait time between each pixel (0 for instant)
         """
-        for i in range(self.led_count):
-            pixel = self.pixels[i]
-            pixel.set_color(colors[i % len(colors)])
-            self.strip.show()
-            time.sleep(wait_ms/1000.0)
+        is_infinite = iterations == 0
+
+        i = 0
+        while is_infinite or i < iterations:
+            self.all_pixels_off()
+            for j in range(self.led_count):
+                pixel = self.pixels[j]
+                pixel.set_color(colors[j % len(colors)])
+                self.strip.show()
+                time.sleep(wait_ms/1000.0)
+            i += 1
 
     def pulse(self, iterations=0, wait_ms=2):
         """
