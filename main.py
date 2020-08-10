@@ -179,6 +179,7 @@ if  __name__=="__main__":
     if args.use_gui:
         root = ThemedTk(theme="arc")
         gui = GUI(root, moodlights)
+        root.protocol("WM_DELETE_WINDOW",moodlights.shutdown)
         root.mainloop()
     else:
         # Ask for user input
