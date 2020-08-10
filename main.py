@@ -2,6 +2,8 @@ from rpi_ws281x import Color, PixelStrip, ws
 import time
 import argparse
 
+import tkinter as tk
+
 from utils.moodlights import Moodlights
 
 
@@ -162,19 +164,30 @@ def action(option, args=None, is_construction=False):
     else: 
         print("Not a valid option")
 
+def launch_gui():
+    window = tk.Tk()
+    window.title("RPi RGB")
+    window.geometry("1000x800")
+
+    window.mainloop()
+
 
 if  __name__=="__main__":
     parser = argparse.ArgumentParser(description="Control some LEDs")
     parser.add_argument("--led_count", type=int, default=30, help="Number of LED pixels")
     parser.add_argument("--led_pin", type=int, help="GPIO pin connected to the pixels")
     parser.add_argument("--led_brightness", type=int, help="Brightness of pixels (between 0 and 255)")
+    parser.add_argument("--use_gui", type=bool, default=True, help="If True, launch Tkinter GUI. If False, use command line")
     args = parser.parse_args()
 
     # Create a Moodlight object
-    moodlights = Moodlights(args.led_count, args.led_pin, LED_FREQ_HZ, LED_DMA, LED_INVERT, args.led_brightness, LED_CHANNEL)
+    #moodlights = Moodlights(args.led_count, args.led_pin, LED_FREQ_HZ, LED_DMA, LED_INVERT, args.led_brightness, LED_CHANNEL)
 
-    # Ask for user input
-    while True:
-        print_menu()
-        option = input("Option: ")
-        action(option)
+    if args.use_gui:
+        launch_gui()
+    else:
+        # Ask for user input
+        while True:
+            print_menu()
+            option = input("Option: ")
+            action(option)
