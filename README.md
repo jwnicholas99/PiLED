@@ -40,7 +40,10 @@ Connect them according to the diagram below:
 Install the following packages:
 
 ```
-$ pip install rpi_ws281x
+$ sudo pip3 install rpi_ws281x
+$ sudo pip3 install tkinter
+$ sudo pip3 install ttkthemes
+$ sudo pip3 install tkcolorpicker
 ```
 
 And repeat

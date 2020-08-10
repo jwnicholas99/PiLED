@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkcolorpicker import askcolor
 from tkinter import ttk
 from rpi_ws281x import Color, PixelStrip, ws
 
@@ -11,6 +12,7 @@ class GUI():
         master.geometry("800x600")
 
         self.notebook = ttk.Notebook(master)
+        self.notebook.enable_traversal()
         self.notebook.pack()
 
         color_wipe_frame = tk.Frame(self.notebook, width=800, height=600)
@@ -19,6 +21,9 @@ class GUI():
         rainbow_cycle_frame = tk.Frame(self.notebook, width=800, height=600)
         rainbow_chase_frame = tk.Frame(self.notebook, width=800, height=600)
         construct_frame = tk.Frame(self.notebook, width=800, height=600)
+
+        # Set up color_wipe_frame
+        add_color_button = ttk.Button(color_wipe_frame, text="Add color", command=lambda: self.ask_color(color_wipe_frame)).pack()
 
         color_wipe_frame.pack(fill="both", expand=1)
         pulse_frame.pack(fill="both", expand=1)
@@ -33,6 +38,15 @@ class GUI():
         self.notebook.add(rainbow_cycle_frame, text="Rainbow Cycle")
         self.notebook.add(rainbow_chase_frame, text="Rainbow Chase")
         self.notebook.add(construct_frame, text="Construct")
+
+    def ask_color(self, frame):
+        color = askcolor()
+        if color[0] is not None:
+            rgb = [int(x) for x in color[0]]
+            self.moodlights.color_wipe([Color(*rgb)], 50)
+            print(color)
+            color_frame = tk.Frame(frame, width=16, height=16, bg=color[1]).pack()
+            
 
     def light(self):
         self.moodlights.wave([Color(100, 150, 50)], 255, spread=int(self.wave_spread_entry.get()))
