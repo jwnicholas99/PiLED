@@ -23,14 +23,16 @@ class GUI():
         construct_frame = ttk.Frame(self.notebook, width=800, height=600)
 
         # Set up color_wipe_frame
-        pick_color_frame = ttk.Frame(color_wipe_frame, padding=10)
+        pick_color_frame = ttk.LabelFrame(color_wipe_frame, text="Choose a color sequence", padding=20)
         color_wipe_sequence = []
-        sequence_frame = ttk.LabelFrame(color_wipe_frame, text="Color Sequence", padding=10)
-        add_color_button = ttk.Button(pick_color_frame, text="Add color", command=lambda: self.ask_color(sequence_frame, color_wipe_sequence))
-        remove_color_button = ttk.Button(pick_color_frame, text="Remove color", command=lambda: self.remove_color(sequence_frame, color_wipe_sequence))
-        clear_color_button = ttk.Button(pick_color_frame, text="Clear", command=lambda: self.clear_color(sequence_frame, color_wipe_sequence))
+        sequence_frame = ttk.LabelFrame(pick_color_frame, text="Color Sequence", padding=10)
+        buttons_frame = ttk.Frame(pick_color_frame, padding=10)
+        add_color_button = ttk.Button(buttons_frame, text="Add color", command=lambda: self.ask_color(sequence_frame, color_wipe_sequence))
+        remove_color_button = ttk.Button(buttons_frame, text="Remove color", command=lambda: self.remove_color(sequence_frame, color_wipe_sequence))
+        clear_color_button = ttk.Button(buttons_frame, text="Clear", command=lambda: self.clear_color(sequence_frame, color_wipe_sequence))
 
-        pick_color_frame.pack()
+        pick_color_frame.pack(pady=50)
+        buttons_frame.pack()
         add_color_button.pack(side=tk.LEFT)
         remove_color_button.pack(side=tk.LEFT)
         clear_color_button.pack(side=tk.LEFT)
@@ -48,11 +50,12 @@ class GUI():
         wait_ms_label = ttk.Label(wait_ms_frame, text="wait time (ms): ")
         wait_ms_entry = ttk.Entry(wait_ms_frame)
 
-        wait_ms_frame.pack()
+        wait_ms_frame.pack(pady=20)
         wait_ms_label.pack(side=tk.LEFT)
         wait_ms_entry.pack(side=tk.LEFT)
 
-        color_wipe_button = ttk.Button(color_wipe_frame, text="Display", command=lambda: self.color_wipe(color_wipe_sequence, iterations_entry.get(), wait_ms_entry.get()))
+        color_wipe_button = ttk.Button(color_wipe_frame, text="Display", width="20", 
+                                       command=lambda: self.color_wipe(color_wipe_sequence, iterations_entry.get(), wait_ms_entry.get()))
         color_wipe_button.pack()
 
         color_wipe_frame.pack(fill="both", expand=1)
@@ -74,7 +77,7 @@ class GUI():
         if color[0] is not None:
             rgb = [int(x) for x in color[0]]
             sequence.append(Color(*rgb))
-            self.moodlights.color_wipe([Color(*rgb)], 1, 0)
+            self.moodlights.color_wipe(sequence, 1, 0)
             color_frame = tk.Frame(frame, width=20, height=20, bg=color[1]).pack(side=tk.LEFT)
 
     def remove_color(self, frame, sequence):
@@ -82,11 +85,13 @@ class GUI():
         if colors:
             sequence.pop()
             colors[-1].destroy()
+            self.moodlights.color_wipe(sequence, 1, 0)
 
     def clear_color(self, frame, sequence):
         for color in frame.winfo_children():
             sequence.pop()
             color.destroy()
+            self.moodlights.color_wipe([Color(0, 0, 0)], 1, 0)
 
     def color_wipe(self, sequence, iterations, wait_ms):
         iterations = int(iterations)
