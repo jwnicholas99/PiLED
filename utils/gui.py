@@ -26,8 +26,8 @@ class GUI():
         color_wipe_sequence = []
         self.setup_pick_colors(color_wipe_frame, color_wipe_sequence)
         color_wipe_params_frame = ttk.LabelFrame(color_wipe_frame, text="Parameters", padding=20)
-        color_wipe_iterations = self.setup_iterations(color_wipe_params_frame)
-        color_wipe_wait_ms = self.setup_wait_ms(color_wipe_params_frame)
+        color_wipe_iterations = self.setup_entry(color_wipe_params_frame, "Num iterations (0 is infinite): ")
+        color_wipe_wait_ms = self.setup_entry(color_wipe_params_frame, "Wait time (ms): ")
 
         color_wipe_params_frame.pack(pady=10)
         color_wipe_button = ttk.Button(color_wipe_frame, text="Display", width="20", 
@@ -37,8 +37,8 @@ class GUI():
 
         # Set up pulse frame
         pulse_params_frame = ttk.LabelFrame(pulse_frame, text="Parameters", padding=20)
-        pulse_iterations = self.setup_iterations(pulse_params_frame)
-        pulse_wait_ms = self.setup_wait_ms(pulse_params_frame)
+        pulse_iterations = self.setup_entry(pulse_params_frame, "Num iterations (0 is infinite): ")
+        pulse_wait_ms = self.setup_entry(pulse_params_frame, "Wait time (ms): ")
 
         pulse_params_frame.pack(pady=70)
         pulse_button = ttk.Button(pulse_frame, text="Display", width="20", 
@@ -50,16 +50,29 @@ class GUI():
         wave_sequence = []
         self.setup_pick_colors(wave_frame, wave_sequence)
 
-        #color_wipe_params_frame.pack(pady=10)
-        #color_wipe_button = ttk.Button(color_wipe_frame, text="Display", width="20", 
-        #                               command=lambda: self.color_wipe(color_wipe_sequence, iterations_entry.get(), wait_ms_entry.get()))
-        #color_wipe_button.pack(pady=40)
+        wave_params_frame = ttk.LabelFrame(wave_frame, text="Parameters", padding=10)
+        wave_iterations = self.setup_entry(wave_params_frame, "Num iterations (0 is infinite): ")
+        wave_intensity = self.setup_entry(wave_params_frame, "Intensity (0-255): ")
+        wave_wait_ms = self.setup_entry(wave_params_frame, "Wait time (ms): ")
+        wave_spread = self.setup_entry(wave_params_frame, "Spread: ")
+        wave_is_reverse = self.setup_entry(wave_params_frame, "Is reverse (True or False): ")
+
+        wave_params_frame.pack(pady=0)
+        wave_button = ttk.Button(wave_frame, text="Display", width="20", 
+                                       command=lambda: self.wave(wave_sequence,
+                                                                 wave_iterations.get(),
+                                                                 wave_intensity.get(),
+                                                                 wave_wait_ms.get(),
+                                                                 wave_spread.get(),
+                                                                 wave_is_reverse.get()))
+        wave_button.pack(pady=10)
+
 
 
         # Set up rainbow cycle frame
         rainbow_cycle_params_frame = ttk.LabelFrame(rainbow_cycle_frame, text="Parameters", padding=20)
-        rainbow_cycle_iterations = self.setup_iterations(rainbow_cycle_params_frame)
-        rainbow_cycle_wait_ms = self.setup_wait_ms(rainbow_cycle_params_frame)
+        rainbow_cycle_iterations = self.setup_entry(rainbow_cycle_params_frame, "Num iterations (0 is infinite): ")
+        rainbow_cycle_wait_ms = self.setup_entry(rainbow_cycle_params_frame, "Wait time (ms): ")
 
         rainbow_cycle_params_frame.pack(pady=70)
         rainbow_cycle_button = ttk.Button(rainbow_cycle_frame, text="Display", width="20", 
@@ -69,8 +82,8 @@ class GUI():
 
         # Set up rainbow chase frame
         rainbow_chase_params_frame = ttk.LabelFrame(rainbow_chase_frame, text="Parameters", padding=20)
-        rainbow_chase_iterations = self.setup_iterations(rainbow_chase_params_frame)
-        rainbow_chase_wait_ms = self.setup_wait_ms(rainbow_chase_params_frame)
+        rainbow_chase_iterations = self.setup_entry(rainbow_chase_params_frame, "Num iterations (0 is infinite): ")
+        rainbow_chase_wait_ms = self.setup_entry(rainbow_chase_params_frame, "Wait time (ms): ")
 
         rainbow_chase_params_frame.pack(pady=70)
         rainbow_chase_button = ttk.Button(rainbow_chase_frame, text="Display", width="20", 
@@ -129,9 +142,9 @@ class GUI():
         clear_color_button.pack(side=tk.LEFT)
         sequence_frame.pack(padx=10, pady=10)
 
-    def setup_iterations(self, frame):
+    def setup_entry(self, frame, display_text):
         iterations_frame = ttk.Frame(frame, padding=10)
-        iterations_label = ttk.Label(iterations_frame, text="Num iterations (0 is infinite): ")
+        iterations_label = ttk.Label(iterations_frame, text=display_text)
         iterations_entry = ttk.Entry(iterations_frame)
         iterations_frame.pack()
         iterations_label.pack(side=tk.LEFT)
@@ -142,7 +155,7 @@ class GUI():
         wait_ms_frame = ttk.Frame(frame, padding=10)
         wait_ms_label = ttk.Label(wait_ms_frame, text="wait time (ms): ")
         wait_ms_entry = ttk.Entry(wait_ms_frame)
-        wait_ms_frame.pack(pady=20)
+        wait_ms_frame.pack()
         wait_ms_label.pack(side=tk.LEFT)
         wait_ms_entry.pack(side=tk.LEFT)
         return wait_ms_entry
@@ -151,6 +164,14 @@ class GUI():
         iterations = int(iterations)
         wait_ms = int(wait_ms)
         self.moodlights.color_wipe(sequence, iterations, wait_ms)
+
+    def wave(self, sequence, iterations, intensity, wait_ms, spread, is_reverse):
+        iterations = int(iterations)
+        intensity = int(intensity)
+        wait_ms = int(wait_ms)
+        spread = int(spread)
+        is_reverse = is_reverse == 'True'
+        self.moodlights.wave(sequence, iterations, intensity, wait_ms, spread, is_reverse)
 
     def pulse(self, iterations, wait_ms):
         iterations = int(iterations)
@@ -166,3 +187,4 @@ class GUI():
         iterations = int(iterations)
         wait_ms = int(wait_ms)
         self.moodlights.rainbow_chase(iterations, wait_ms)
+
