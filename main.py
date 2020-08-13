@@ -90,14 +90,16 @@ def action(option, args=None, is_construction=False):
     elif option == "3":
         if args is None:
             args = {"colors": [],
+                    "iterations": 0,
                     "intensity": 0, 
                     "wait_ms": 0,
                     "spread": 0,
                     "is_reverse": False}
             ask_colors(args)
+            args["iterations"] = int(input("Num of iterations for Wave (0 is infinite): "))
             args["wait_ms"] = int(input("wait_ms for Wave: "))
-            args["intensity"] = int(input("Intensity of wave (between 0 and 255): "))
-            args["spread"] = int(input("spread for wave: "))
+            args["intensity"] = int(input("Intensity of Wave (between 0 and 255): "))
+            args["spread"] = int(input("spread for Wave: "))
             args["is_reverse"] = input("is_reverse for wave (True or False): ") == "True"
 
         if is_construction:

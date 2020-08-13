@@ -75,7 +75,7 @@ class Moodlights():
             self.strip.show()
             i += 1
 
-    def wave(self, colors, intensity, wait_ms=50, spread=0, is_reverse=False):
+    def wave(self, colors, iterations, intensity, wait_ms=50, spread=0, is_reverse=False):
         """
         params:
 
@@ -89,28 +89,32 @@ class Moodlights():
         if is_reverse:
             led_iteration.reverse()
 
-        for i in led_iteration:
-            if self.in_range(i):
-                self.pixels[i].set_color(colors[i % len(colors)])
-                self.pixels[i].set_brightness(intensity)
+        is_infinite = iterations == 0
+        i = 0
+        while is_infinite or i < iterations:
+            for i in led_iteration:
+                if self.in_range(i):
+                    self.pixels[i].set_color(colors[i % len(colors)])
+                    self.pixels[i].set_brightness(intensity)
 
-            for j in range(1, spread+1):
-                brightness = int(abs(intensity - intensity_interval * j))
+                for j in range(1, spread+1):
+                    brightness = int(abs(intensity - intensity_interval * j))
 
-                if self.in_range(i-j):
-                    self.pixels[i-j].set_color(colors[(i-j) % len(colors)])
-                    self.pixels[i-j].set_brightness(brightness)
-                if self.in_range(i+j):
-                    self.pixels[i+j].set_color(colors[(i+j) % len(colors)])
-                    self.pixels[i+j].set_brightness(brightness)
-            
-            if self.in_range(i - spread - 1):
-                self.pixels[i-spread-1].switch_off()
-            if self.in_range(i + spread + 1):
-                self.pixels[i+spread+1].switch_off()
-            self.strip.show()
+                    if self.in_range(i-j):
+                        self.pixels[i-j].set_color(colors[(i-j) % len(colors)])
+                        self.pixels[i-j].set_brightness(brightness)
+                    if self.in_range(i+j):
+                        self.pixels[i+j].set_color(colors[(i+j) % len(colors)])
+                        self.pixels[i+j].set_brightness(brightness)
+                
+                if self.in_range(i - spread - 1):
+                    self.pixels[i-spread-1].switch_off()
+                if self.in_range(i + spread + 1):
+                    self.pixels[i+spread+1].switch_off()
+                self.strip.show()
 
-            time.sleep(wait_ms / 1000.0)
+                time.sleep(wait_ms / 1000.0)
+            i += 1
 
     def wheel(self, pos):
         if pos < 85:
