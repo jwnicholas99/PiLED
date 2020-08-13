@@ -50,6 +50,34 @@ class GUI():
         wave_sequence = []
         self.setup_pick_colors(wave_frame, wave_sequence)
 
+        #color_wipe_params_frame.pack(pady=10)
+        #color_wipe_button = ttk.Button(color_wipe_frame, text="Display", width="20", 
+        #                               command=lambda: self.color_wipe(color_wipe_sequence, iterations_entry.get(), wait_ms_entry.get()))
+        #color_wipe_button.pack(pady=40)
+
+
+        # Set up rainbow cycle frame
+        rainbow_cycle_params_frame = ttk.LabelFrame(rainbow_cycle_frame, text="Parameters", padding=20)
+        rainbow_cycle_iterations = self.setup_iterations(rainbow_cycle_params_frame)
+        rainbow_cycle_wait_ms = self.setup_wait_ms(rainbow_cycle_params_frame)
+
+        rainbow_cycle_params_frame.pack(pady=70)
+        rainbow_cycle_button = ttk.Button(rainbow_cycle_frame, text="Display", width="20", 
+                                       command=lambda: self.rainbow_cycle(rainbow_cycle_iterations.get(), rainbow_cycle_wait_ms.get()))
+        rainbow_cycle_button.pack(pady=20)
+
+
+        # Set up rainbow chase frame
+        rainbow_chase_params_frame = ttk.LabelFrame(rainbow_chase_frame, text="Parameters", padding=20)
+        rainbow_chase_iterations = self.setup_iterations(rainbow_chase_params_frame)
+        rainbow_chase_wait_ms = self.setup_wait_ms(rainbow_chase_params_frame)
+
+        rainbow_chase_params_frame.pack(pady=70)
+        rainbow_chase_button = ttk.Button(rainbow_chase_frame, text="Display", width="20", 
+                                       command=lambda: self.rainbow_chase(rainbow_chase_iterations.get(), rainbow_chase_wait_ms.get()))
+        rainbow_chase_button.pack(pady=20)
+
+
 
         color_wipe_frame.pack(fill="both", expand=1)
         pulse_frame.pack(fill="both", expand=1)
@@ -128,3 +156,13 @@ class GUI():
         iterations = int(iterations)
         wait_ms = int(wait_ms)
         self.moodlights.pulse(iterations, wait_ms)
+
+    def rainbow_cycle(self, iterations, wait_ms):
+        iterations = int(iterations)
+        wait_ms = int(wait_ms)
+        self.moodlights.rainbow_cycle(iterations, wait_ms)
+
+    def rainbow_chase(self, iterations, wait_ms):
+        iterations = int(iterations)
+        wait_ms = int(wait_ms)
+        self.moodlights.rainbow_chase(iterations, wait_ms)
