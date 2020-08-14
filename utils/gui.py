@@ -34,6 +34,19 @@ class GUI():
                                        command=lambda: self.color_wipe(color_wipe_sequence, color_wipe_iterations.get(), color_wipe_wait_ms.get()))
         color_wipe_button.pack(pady=20)
 
+        constructed_sequence_frame = ttk.LabelFrame(construct_frame, text="Constructed Sequence")
+        color_wipe_construct_button = ttk.Button(color_wipe_frame,
+                                                 text="Add to Construction",
+                                                 width="20", 
+                                                 command=lambda: self.add_construction(constructed_sequence_frame, 
+                                                                                       {
+                                                                                         'pattern': 'color_wipe',
+                                                                                         'color_sequence': color_wipe_sequence,
+                                                                                         'iterations': color_wipe_iterations.get(),
+                                                                                         'wait_ms': color_wipe_wait_ms.get()
+                                                                                        }))
+        color_wipe_construct_button.pack(pady=5)
+
 
         # Set up pulse frame
         pulse_params_frame = ttk.LabelFrame(pulse_frame, text="Parameters", padding=20)
@@ -45,6 +58,16 @@ class GUI():
                                        command=lambda: self.pulse(pulse_iterations.get(), pulse_wait_ms.get()))
         pulse_button.pack(pady=20)
 
+        pulse_construct_button = ttk.Button(pulse_frame,
+                                            text="Add to Construction",
+                                            width="20", 
+                                            command=lambda: self.add_construction(constructed_sequence_frame, 
+                                                                                       {
+                                                                                         'pattern': 'pulse',
+                                                                                         'iterations': pulse_iterations.get(),
+                                                                                         'wait_ms': pulse_wait_ms.get()
+                                                                                        }))
+        pulse_construct_button.pack(pady=5)
 
         # Set up wave frame
         wave_sequence = []
@@ -67,6 +90,20 @@ class GUI():
                                                                  wave_is_reverse.get()))
         wave_button.pack(pady=10)
 
+        wave_construct_button = ttk.Button(wave_frame,
+                                            text="Add to Construction",
+                                            width="20", 
+                                            command=lambda: self.add_construction(constructed_sequence_frame, 
+                                                                                       {
+                                                                                         'pattern': 'wave',
+                                                                                         'color_sequence': wave_sequence,
+                                                                                         'iterations': wave_iterations.get(),
+                                                                                         'intensity': wave_intensity.get(),
+                                                                                         'wait_ms': wave_wait_ms.get(),
+                                                                                         'spread': wave_spread.get(),
+                                                                                         'is_reverse': wave_is_reverse.get()
+                                                                                        }))
+        wave_construct_button.pack(pady=5)
 
 
         # Set up rainbow cycle frame
@@ -79,6 +116,16 @@ class GUI():
                                        command=lambda: self.rainbow_cycle(rainbow_cycle_iterations.get(), rainbow_cycle_wait_ms.get()))
         rainbow_cycle_button.pack(pady=20)
 
+        rainbow_cycle_construct_button = ttk.Button(rainbow_cycle_frame,
+                                            text="Add to Construction",
+                                            width="20", 
+                                            command=lambda: self.add_construction(constructed_sequence_frame, 
+                                                                                       {
+                                                                                         'pattern': 'rainbow_cycle',
+                                                                                         'iterations': rainbow_cycle_iterations.get(),
+                                                                                         'wait_ms': rainbow_cycle_wait_ms.get()
+                                                                                        }))
+        rainbow_cycle_construct_button.pack(pady=5)
 
         # Set up rainbow chase frame
         rainbow_chase_params_frame = ttk.LabelFrame(rainbow_chase_frame, text="Parameters", padding=20)
@@ -90,7 +137,18 @@ class GUI():
                                        command=lambda: self.rainbow_chase(rainbow_chase_iterations.get(), rainbow_chase_wait_ms.get()))
         rainbow_chase_button.pack(pady=20)
 
+        rainbow_chase_construct_button = ttk.Button(rainbow_chase_frame,
+                                            text="Add to Construction",
+                                            width="20", 
+                                            command=lambda: self.add_construction(constructed_sequence_frame, 
+                                                                                       {
+                                                                                         'pattern': 'rainbow_chase',
+                                                                                         'iterations': rainbow_chase_iterations.get(),
+                                                                                         'wait_ms': rainbow_chase_wait_ms.get()
+                                                                                        }))
+        rainbow_chase_construct_button.pack(pady=5)
 
+        constructed_sequence_frame.pack(pady=10)
 
         color_wipe_frame.pack(fill="both", expand=1)
         pulse_frame.pack(fill="both", expand=1)
@@ -188,3 +246,25 @@ class GUI():
         wait_ms = int(wait_ms)
         self.moodlights.rainbow_chase(iterations, wait_ms)
 
+    def bits2hex(self, bits):
+        r = hex(bits >> 16 & 0xff)[2:].rjust(2, "0")
+        g = hex(bits >> 8 & 0xff)[2:].rjust(2, "0")
+        b = hex(bits & 0xff)[2:].rjust(2, "0")
+        return "#" + r + g + b
+
+    def add_construction(self, sequences_frame, args):
+        container_frame = ttk.Frame(sequences_frame)
+        pattern_frame = ttk.LabelFrame(container_frame, text=args["pattern"], padding=10)
+        for key in args:
+            if key == "color_sequence":
+                color_sequence_frame = ttk.LabelFrame(pattern_frame, text="Color Sequence", padding=10)
+                for color in args["color_sequence"]:
+                    color_frame = tk.Frame(color_sequence_frame, width=15, height=15, bg=self.bits2hex(color)).pack(side=tk.LEFT)
+                color_sequence_frame.pack(side=tk.LEFT, padx=5, pady=5)
+            elif key == "pattern":
+                continue
+            else:
+                arg_label = ttk.Label(pattern_frame, text=key + ": " + str(args[key]))
+                arg_label.pack(side=tk.LEFT, padx=5)
+        pattern_frame.pack(side=tk.LEFT, padx=10, pady=10)
+        container_frame.pack(fill="x", expand=1)

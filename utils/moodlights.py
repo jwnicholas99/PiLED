@@ -90,8 +90,8 @@ class Moodlights():
             led_iteration.reverse()
 
         is_infinite = iterations == 0
-        i = 0
-        while is_infinite or i < iterations:
+        k = 0
+        while is_infinite or k < iterations:
             for i in led_iteration:
                 if self.in_range(i):
                     self.pixels[i].set_color(colors[i % len(colors)])
@@ -114,7 +114,7 @@ class Moodlights():
                 self.strip.show()
 
                 time.sleep(wait_ms / 1000.0)
-            i += 1
+            k += 1
 
     def wheel(self, pos):
         if pos < 85:
