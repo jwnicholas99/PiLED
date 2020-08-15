@@ -1,3 +1,4 @@
+import copy
 import tkinter as tk
 from tkcolorpicker import askcolor
 from tkinter import ttk
@@ -42,11 +43,13 @@ class GUI():
                                        command=lambda: self.color_wipe(color_wipe_sequence, color_wipe_iterations.get(), color_wipe_wait_ms.get()))
         color_wipe_button.pack(pady=20)
 
+        constructed_sequence = []
         constructed_sequence_frame = ttk.LabelFrame(construct_frame, text="Constructed Sequence")
         color_wipe_construct_button = ttk.Button(color_wipe_frame,
                                                  text="Add to Construction",
                                                  width="20", 
-                                                 command=lambda: self.add_construction(constructed_sequence_frame, 
+                                                 command=lambda: self.add_construction(constructed_sequence_frame,
+                                                                                       constructed_sequence,
                                                                                        {
                                                                                          'pattern': 'color_wipe',
                                                                                          'color_sequence': color_wipe_sequence,
@@ -69,7 +72,8 @@ class GUI():
         pulse_construct_button = ttk.Button(pulse_frame,
                                             text="Add to Construction",
                                             width="20", 
-                                            command=lambda: self.add_construction(constructed_sequence_frame, 
+                                            command=lambda: self.add_construction(constructed_sequence_frame,
+                                                                                  constructed_sequence,
                                                                                        {
                                                                                          'pattern': 'pulse',
                                                                                          'iterations': pulse_iterations.get(),
@@ -101,7 +105,8 @@ class GUI():
         wave_construct_button = ttk.Button(wave_frame,
                                             text="Add to Construction",
                                             width="20", 
-                                            command=lambda: self.add_construction(constructed_sequence_frame, 
+                                            command=lambda: self.add_construction(constructed_sequence_frame,
+                                                                                  constructed_sequence,
                                                                                        {
                                                                                          'pattern': 'wave',
                                                                                          'color_sequence': wave_sequence,
@@ -127,7 +132,8 @@ class GUI():
         rainbow_cycle_construct_button = ttk.Button(rainbow_cycle_frame,
                                             text="Add to Construction",
                                             width="20", 
-                                            command=lambda: self.add_construction(constructed_sequence_frame, 
+                                            command=lambda: self.add_construction(constructed_sequence_frame,
+                                                                                  constructed_sequence,
                                                                                        {
                                                                                          'pattern': 'rainbow_cycle',
                                                                                          'iterations': rainbow_cycle_iterations.get(),
@@ -148,7 +154,8 @@ class GUI():
         rainbow_chase_construct_button = ttk.Button(rainbow_chase_frame,
                                             text="Add to Construction",
                                             width="20", 
-                                            command=lambda: self.add_construction(constructed_sequence_frame, 
+                                            command=lambda: self.add_construction(constructed_sequence_frame,
+                                                                                  constructed_sequence,
                                                                                        {
                                                                                          'pattern': 'rainbow_chase',
                                                                                          'iterations': rainbow_chase_iterations.get(),
@@ -157,6 +164,11 @@ class GUI():
         rainbow_chase_construct_button.pack(pady=5)
 
         constructed_sequence_frame.pack(pady=10)
+        constructed_iterations = self.setup_entry(construct_frame, "Num iterations (0 is infinite): ")
+        constructed_button = ttk.Button(construct_frame, text="Display", width="20", 
+                                        command=lambda: self.display_construction(constructed_sequence, constructed_iterations.get()))
+        constructed_button.pack(pady=30)
+
 
         color_wipe_notebook_frame.pack(fill="both", expand=1)
         pulse_notebook_frame.pack(fill="both", expand=1)
@@ -217,15 +229,6 @@ class GUI():
         iterations_entry.pack(side=tk.LEFT)
         return iterations_entry
 
-    def setup_wait_ms(self, frame):
-        wait_ms_frame = ttk.Frame(frame, padding=10)
-        wait_ms_label = ttk.Label(wait_ms_frame, text="wait time (ms): ")
-        wait_ms_entry = ttk.Entry(wait_ms_frame)
-        wait_ms_frame.pack()
-        wait_ms_label.pack(side=tk.LEFT)
-        wait_ms_entry.pack(side=tk.LEFT)
-        return wait_ms_entry
-
     def color_wipe(self, sequence, iterations, wait_ms):
         iterations = int(iterations)
         wait_ms = int(wait_ms)
@@ -254,13 +257,32 @@ class GUI():
         wait_ms = int(wait_ms)
         self.moodlights.rainbow_chase(iterations, wait_ms)
 
+    def display_construction(self, sequence, iterations):
+        patterns = {
+            "color_wipe": self.color_wipe,
+            "pulse": self.pulse,
+            "wave": self.wave,
+            "rainbow_cycle": self.rainbow_cycle,
+            "rainbow_chase": self.rainbow_chase
+        }
+
+        iterations = int(iterations)
+        is_infinite = iterations == 0
+        i = 0
+        while is_infinite or i < iterations:
+            for pattern_args in sequence:
+                pattern = pattern_args['pattern']
+                args = [v for k,v in pattern_args.items() if k not in ["pattern", "frame"]]
+                patterns[pattern](*args)
+            i += 1
+
     def bits2hex(self, bits):
         r = hex(bits >> 16 & 0xff)[2:].rjust(2, "0")
         g = hex(bits >> 8 & 0xff)[2:].rjust(2, "0")
         b = hex(bits & 0xff)[2:].rjust(2, "0")
         return "#" + r + g + b
 
-    def add_construction(self, sequences_frame, args):
+    def add_construction(self, sequences_frame, constructed_sequence, args):
         container_frame = ttk.Frame(sequences_frame)
         pattern_frame = ttk.LabelFrame(container_frame, text=args["pattern"], padding=10)
         for key in args:
@@ -276,13 +298,20 @@ class GUI():
                 arg_label.pack(side=tk.LEFT, padx=5)
         pattern_frame.pack(side=tk.LEFT, padx=10, pady=10)
 
-        remove_button = ttk.Button(container_frame, text="Remove", command=lambda: self.remove_pattern(container_frame))
+        remove_button = ttk.Button(container_frame, text="Remove", command=lambda: self.remove_pattern(container_frame, constructed_sequence))
         remove_button.pack(side=tk.RIGHT, padx=5)
-
         container_frame.pack(fill="x", expand=1)
 
-    def remove_pattern(self, frame):
-        frame.destroy()
+        construct_args = copy.deepcopy(args)
+        construct_args["frame"] = container_frame
+        constructed_sequence.append(construct_args)
+
+    def remove_pattern(self, frame, sequence):
+        for i in range(len(sequence)):
+            if sequence[i]["frame"] is frame:
+                sequence.pop(i)
+                frame.destroy()
+                break
 
     def create_canvas(self, notebook_frame):
         canvas = tk.Canvas(notebook_frame)

@@ -97,8 +97,8 @@ def action(option, args=None, is_construction=False):
                     "is_reverse": False}
             ask_colors(args)
             args["iterations"] = int(input("Num of iterations for Wave (0 is infinite): "))
-            args["wait_ms"] = int(input("wait_ms for Wave: "))
             args["intensity"] = int(input("Intensity of Wave (between 0 and 255): "))
+            args["wait_ms"] = int(input("wait_ms for Wave: "))
             args["spread"] = int(input("spread for Wave: "))
             args["is_reverse"] = input("is_reverse for wave (True or False): ") == "True"
 
