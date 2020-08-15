@@ -9,18 +9,26 @@ class GUI():
 
         self.master = master
         master.title("RPi RGB")
-        master.geometry("800x600")
+        master.geometry("800x800")
 
         self.notebook = ttk.Notebook(master)
         self.notebook.enable_traversal()
-        self.notebook.pack()
+        self.notebook.pack(fill="both", expand=1)
 
-        color_wipe_frame = ttk.Frame(self.notebook, width=800, height=600)
-        pulse_frame = ttk.Frame(self.notebook, width=800, height=600)
-        wave_frame = ttk.Frame(self.notebook, width=800, height=600)
-        rainbow_cycle_frame = ttk.Frame(self.notebook, width=800, height=600)
-        rainbow_chase_frame = ttk.Frame(self.notebook, width=800, height=600)
-        construct_frame = ttk.Frame(self.notebook, width=800, height=600)
+        color_wipe_notebook_frame = ttk.Frame(self.notebook, width=800, height=600)
+        pulse_notebook_frame = ttk.Frame(self.notebook, width=800, height=600)
+        wave_notebook_frame = ttk.Frame(self.notebook, width=800, height=600)
+        rainbow_cycle_notebook_frame = ttk.Frame(self.notebook, width=800, height=600)
+        rainbow_chase_notebook_frame = ttk.Frame(self.notebook, width=800, height=600)
+        construct_notebook_frame = ttk.Frame(self.notebook, width=800, height=600)
+
+        color_wipe_frame = self.create_canvas(color_wipe_notebook_frame)
+        pulse_frame = self.create_canvas(pulse_notebook_frame)
+        wave_frame = self.create_canvas(wave_notebook_frame)
+        rainbow_cycle_frame = self.create_canvas(rainbow_cycle_notebook_frame)
+        rainbow_chase_frame = self.create_canvas(rainbow_chase_notebook_frame)
+        construct_frame = self.create_canvas(construct_notebook_frame)
+
 
         # Set up color wipe frame
         color_wipe_sequence = []
@@ -150,19 +158,19 @@ class GUI():
 
         constructed_sequence_frame.pack(pady=10)
 
-        color_wipe_frame.pack(fill="both", expand=1)
-        pulse_frame.pack(fill="both", expand=1)
-        wave_frame.pack(fill="both", expand=1)
-        rainbow_cycle_frame.pack(fill="both", expand=1)
-        rainbow_chase_frame.pack(fill="both", expand=1)
-        construct_frame.pack(fill="both", expand=1)
+        color_wipe_notebook_frame.pack(fill="both", expand=1)
+        pulse_notebook_frame.pack(fill="both", expand=1)
+        wave_notebook_frame.pack(fill="both", expand=1)
+        rainbow_cycle_notebook_frame.pack(fill="both", expand=1)
+        rainbow_chase_notebook_frame.pack(fill="both", expand=1)
+        construct_notebook_frame.pack(fill="both", expand=1)
 
-        self.notebook.add(color_wipe_frame, text="Color Wipe")
-        self.notebook.add(pulse_frame, text="Pulse")
-        self.notebook.add(wave_frame, text="Wave")
-        self.notebook.add(rainbow_cycle_frame, text="Rainbow Cycle")
-        self.notebook.add(rainbow_chase_frame, text="Rainbow Chase")
-        self.notebook.add(construct_frame, text="Construct")
+        self.notebook.add(color_wipe_notebook_frame, text="Color Wipe")
+        self.notebook.add(pulse_notebook_frame, text="Pulse")
+        self.notebook.add(wave_notebook_frame, text="Wave")
+        self.notebook.add(rainbow_cycle_notebook_frame, text="Rainbow Cycle")
+        self.notebook.add(rainbow_chase_notebook_frame, text="Rainbow Chase")
+        self.notebook.add(construct_notebook_frame, text="Construct")
 
     def ask_color(self, frame, sequence):
         color = askcolor()
@@ -268,3 +276,15 @@ class GUI():
                 arg_label.pack(side=tk.LEFT, padx=5)
         pattern_frame.pack(side=tk.LEFT, padx=10, pady=10)
         container_frame.pack(fill="x", expand=1)
+
+    def create_canvas(self, notebook_frame):
+        canvas = tk.Canvas(notebook_frame)
+        canvas.pack(side=tk.LEFT, fill="both", expand=1)
+        scrollbar = ttk.Scrollbar(notebook_frame, orient=tk.VERTICAL, command=canvas.yview)
+        scrollbar.pack(side=tk.RIGHT, fill="y")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        canvas.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        inner_frame = ttk.Frame(canvas)
+        canvas.create_window((400,0), window=inner_frame, anchor="n")
+
+        return inner_frame
