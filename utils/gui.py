@@ -2,6 +2,7 @@ import copy
 import tkinter as tk
 from tkcolorpicker import askcolor
 from tkinter import ttk
+from tkinter import messagebox
 from rpi_ws281x import Color, PixelStrip, ws
 
 class GUI():
@@ -229,32 +230,63 @@ class GUI():
         iterations_entry.pack(side=tk.LEFT)
         return iterations_entry
 
+    def convert_input(self, input, input_type, param_name, correct_type):
+        def convert_bool(input):
+            if input is not "True" or input is not "False":
+                raise TypeError()
+            return input
+
+        def convert_int(input):
+            if input < 0:
+                raise TypeError()
+            return int(input)
+
+        def convert_float(input):
+            if input < 0:
+                raise TypeError()
+            return float(input)
+
+        types = {
+            "int": convert_int,
+            "float": convert_float,
+            "bool": convert_bool
+        }
+
+        try:
+            output = types[input_type](input)
+            return output
+        except:
+            messagebox.showerror("Invalid input", param_name + " needs to be " + correct_type)
+            return None
+
     def color_wipe(self, sequence, iterations, wait_ms):
-        iterations = int(iterations)
-        wait_ms = int(wait_ms)
+        iterations = self.convert_input(iterations, "int", "Iterations", "a positive int")
+        wait_ms = self.convert_input(wait_ms, "float", "Wait_ms", "a positive float")
+        if iterations is None or wait_ms is None:
+            return
         self.moodlights.color_wipe(sequence, iterations, wait_ms)
 
     def wave(self, sequence, iterations, intensity, wait_ms, spread, is_reverse):
         iterations = int(iterations)
         intensity = int(intensity)
-        wait_ms = int(wait_ms)
+        wait_ms = float(wait_ms)
         spread = int(spread)
         is_reverse = is_reverse == 'True'
         self.moodlights.wave(sequence, iterations, intensity, wait_ms, spread, is_reverse)
 
     def pulse(self, iterations, wait_ms):
         iterations = int(iterations)
-        wait_ms = int(wait_ms)
+        wait_ms = float(wait_ms)
         self.moodlights.pulse(iterations, wait_ms)
 
     def rainbow_cycle(self, iterations, wait_ms):
         iterations = int(iterations)
-        wait_ms = int(wait_ms)
+        wait_ms = float(wait_ms)
         self.moodlights.rainbow_cycle(iterations, wait_ms)
 
     def rainbow_chase(self, iterations, wait_ms):
         iterations = int(iterations)
-        wait_ms = int(wait_ms)
+        wait_ms = float(wait_ms)
         self.moodlights.rainbow_chase(iterations, wait_ms)
 
     def display_construction(self, sequence, iterations):
