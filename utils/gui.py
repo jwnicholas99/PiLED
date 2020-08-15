@@ -275,7 +275,14 @@ class GUI():
                 arg_label = ttk.Label(pattern_frame, text=key + ": " + str(args[key]))
                 arg_label.pack(side=tk.LEFT, padx=5)
         pattern_frame.pack(side=tk.LEFT, padx=10, pady=10)
+
+        remove_button = ttk.Button(container_frame, text="Remove", command=lambda: self.remove_pattern(container_frame))
+        remove_button.pack(side=tk.RIGHT, padx=5)
+
         container_frame.pack(fill="x", expand=1)
+
+    def remove_pattern(self, frame):
+        frame.destroy()
 
     def create_canvas(self, notebook_frame):
         canvas = tk.Canvas(notebook_frame)
