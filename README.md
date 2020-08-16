@@ -40,16 +40,17 @@ After picking the color, the LED strip will immediately display the chosen color
 Finally, the app makes it easy to chain patterns together by adding your chosen LED patterns to the construction page.
 
 ## Usage
-To launch the GUI, run
 ```
-sudo python3 main.py --led_count=30 --led_pin=18 --led_brightness=255
-```
-where `--led_count` is the number of pixels in your LED strip, and `--led_pin` is the RPi GPIO pin that you are using to control the LED strip. 
+usage: sudo main.py [OPTIONS]
 
-To use plain command-line, run
+Options:
+  --led_count           Number of LED pixels
+  --led_pin             GPIO pin to control LED strip
+  --led_brightness      Brightness of pixels (between 0 and 255)
+  --use_gui             Use GUI app or command-line
+  -h, --help            show this help message and exit
 ```
-sudo python3 main.py --led_count=30 --led_pin=18 --led_brightness=255 --use_gui=False
-```
+
 
 ## Setup
 
@@ -81,11 +82,6 @@ $ sudo pip3 install tkcolorpicker
 * Python - Everything is written in Python
 * [rpi-ws281x-python](https://github.com/rpi-ws281x/rpi-ws281x-python/blob/master/library/rpi_ws281x/rpi_ws281x.py) - Handles all the low-level stuff of controlling the LED strip
 * [Tkinter](https://docs.python.org/3/library/tkinter.html) - Creates the GUI app
-
-## Authors
-
-* **Nicholas Lim Jing Wei** - [jwnicholas99](https://github.com/jwnicholas99)
-
 
 ## License
 
