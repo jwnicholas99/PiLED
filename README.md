@@ -40,24 +40,20 @@ After picking the color, the LED strip will immediately display the chosen color
 Finally, the app makes it easy to chain patterns together by adding your chosen LED patterns to the construction page.
 
 ## Usage
-To launch with the GUI, run
+To launch the GUI, run
 ```
 sudo python3 main.py --led_count=30 --led_pin=18 --led_brightness=255
 ```
-where `--led_count` is the number of pixels in your LED strip, and `--led_pin` is the RPi GPIO pin that you are using to control the LED strip. Take note that you need `sudo` for the `rpi_ws281x` library to work to access the underlying hardware.
+where `--led_count` is the number of pixels in your LED strip, and `--led_pin` is the RPi GPIO pin that you are using to control the LED strip. 
 
-The GUI app has 6 tabs, 5 for the pre-defined LED patterns, and 1 for constructing your own. Each tab for the pre-defined patterns contains all the fields you need to set in order to create the LED pattern. There are two buttons, `Display` and `Add to Construction`. `Display` simply lights up the LED strip with your pattern, while `Add to Construction` will add the LED pattern to your own constructed sequence. The constructed sequence will be shown in the last tab.
-
-
-You can also use plain command-line by running
+To use plain command-line, run
 ```
 sudo python3 main.py --led_count=30 --led_pin=18 --led_brightness=255 --use_gui=False
 ```
 
-
 ## Setup
 
-There are two parts to the set-up: wiring the circuit and installing required Python packages. Luckily, both are easy.
+There are two simple parts to the set-up: wiring the circuit and installing required Python packages.
 
 ### Wiring the Circuit
 
@@ -79,47 +75,20 @@ $ sudo pip3 install tkinter
 $ sudo pip3 install ttkthemes
 $ sudo pip3 install tkcolorpicker
 ```
-That's all! 
 
-## Running the tests
+## Credits
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-
-## Built With
-
-* Python - This entire application is written in Python
-* [rpi-ws281x-python](https://github.com/rpi-ws281x/rpi-ws281x-python/blob/master/library/rpi_ws281x/rpi_ws281x.py) - Used to handle all the low-level stuff of controlling the LED strip
-* [Tkinter](https://docs.python.org/3/library/tkinter.html) - Used to create the GUI app
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+* Python - Everything is written in Python
+* [rpi-ws281x-python](https://github.com/rpi-ws281x/rpi-ws281x-python/blob/master/library/rpi_ws281x/rpi_ws281x.py) - Handles all the low-level stuff of controlling the LED strip
+* [Tkinter](https://docs.python.org/3/library/tkinter.html) - Creates the GUI app
 
 ## Authors
 
-* **Nicholas Lim Jing Wei** - *Initial work* - [jwnicholas99](https://github.com/jwnicholas99)
+* **Nicholas Lim Jing Wei** - [jwnicholas99](https://github.com/jwnicholas99)
 
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
 
