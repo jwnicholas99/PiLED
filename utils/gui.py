@@ -232,24 +232,39 @@ class GUI():
 
     def convert_input(self, input, input_type, param_name, correct_type):
         def convert_bool(input):
-            if input is not "True" or input is not "False":
+            if input != "True" and input != "False":
                 raise TypeError()
             return input
 
         def convert_int(input):
-            if input < 0:
+            output = int(input)
+            if output < 0:
                 raise TypeError()
-            return int(input)
+            return output
 
         def convert_float(input):
-            if input < 0:
+            output = float(input)
+            if output < 0.0:
                 raise TypeError()
-            return float(input)
+            return output
+
+        def convert_intensity(input):
+            output = int(input)
+            if output < 0 or output > 255:
+                raise TypeError()
+            return output
+
+        def convert_color(input):
+            if not len(input):
+                raise TypeError()
+            return input
 
         types = {
             "int": convert_int,
             "float": convert_float,
-            "bool": convert_bool
+            "bool": convert_bool,
+            "intensity": convert_intensity,
+            "color": convert_color
         }
 
         try:
@@ -260,33 +275,44 @@ class GUI():
             return None
 
     def color_wipe(self, sequence, iterations, wait_ms):
-        iterations = self.convert_input(iterations, "int", "Iterations", "a positive int")
-        wait_ms = self.convert_input(wait_ms, "float", "Wait_ms", "a positive float")
-        if iterations is None or wait_ms is None:
+        sequence = self.convert_input(sequence, "color", "Color Wipe color sequence", "a non-empty list")
+        iterations = self.convert_input(iterations, "int", "Color Wipe iterations", "a positive int")
+        wait_ms = self.convert_input(wait_ms, "float", "Color Wipe wait_ms", "a positive float")
+        if any([arg is None for arg in [sequence, iterations, wait_ms]]):
             return
         self.moodlights.color_wipe(sequence, iterations, wait_ms)
 
     def wave(self, sequence, iterations, intensity, wait_ms, spread, is_reverse):
-        iterations = int(iterations)
-        intensity = int(intensity)
-        wait_ms = float(wait_ms)
-        spread = int(spread)
+        sequence = self.convert_input(sequence, "color", "Wave color sequence", "a non-empty list")
+        iterations = self.convert_input(iterations, "int", "Wave iterations", "a positive int")
+        intensity = self.convert_input(intensity, "intensity", "Wave intensity", "a positive int between 0 and 255")
+        wait_ms = self.convert_input(wait_ms, "float", "Wave wait_ms", "a positive float")
+        spread = self.convert_input(spread, "int", "Wave spread", "a positive int")
+        is_reverse = self.convert_input(is_reverse, "bool", "Wave is_reverse", "a 'True' or 'False'")
+        if any([arg is None for arg in [sequence, iterations, intensity, wait_ms, spread, is_reverse]]):
+            return
         is_reverse = is_reverse == 'True'
         self.moodlights.wave(sequence, iterations, intensity, wait_ms, spread, is_reverse)
 
     def pulse(self, iterations, wait_ms):
-        iterations = int(iterations)
-        wait_ms = float(wait_ms)
+        iterations = self.convert_input(iterations, "int", "Pulse iterations", "a positive int")
+        wait_ms = self.convert_input(wait_ms, "float", "Pulse wait_ms", "a positive float")
+        if any([arg is None for arg in [iterations, wait_ms]]):
+            return
         self.moodlights.pulse(iterations, wait_ms)
 
     def rainbow_cycle(self, iterations, wait_ms):
-        iterations = int(iterations)
-        wait_ms = float(wait_ms)
+        iterations = self.convert_input(iterations, "int", "Rainbow Cycle iterations", "a positive int")
+        wait_ms = self.convert_input(wait_ms, "float", "Rainbow Cycle wait_ms", "a positive float")
+        if any([arg is None for arg in [iterations, wait_ms]]):
+            return
         self.moodlights.rainbow_cycle(iterations, wait_ms)
 
     def rainbow_chase(self, iterations, wait_ms):
-        iterations = int(iterations)
-        wait_ms = float(wait_ms)
+        iterations = self.convert_input(iterations, "int", "Rainbow Chase iterations", "a positive int")
+        wait_ms = self.convert_input(wait_ms, "float", "Rainbow Chase wait_ms", "a positive float")
+        if any([arg is None for arg in [iterations, wait_ms]]):
+            return
         self.moodlights.rainbow_chase(iterations, wait_ms)
 
     def display_construction(self, sequence, iterations):
