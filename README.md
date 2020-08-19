@@ -13,6 +13,10 @@
   <a href="#license">License</a>
 </p>
 
+<p align="center">
+<img src="media/app_top.gif" width="589" height="250"/>
+</p>
+
 RPi RGB LED has a graphical user interface (GUI) for easy visualization. It also has pre-defined LED patterns which you can quickly chain together to create your own sequences.
 
 ## Key Features
