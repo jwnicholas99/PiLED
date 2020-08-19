@@ -25,9 +25,7 @@
   <a href="#license">License</a>
 </p>
 
-<p align="center">
-<img src="media/app_top.gif" width="1178" height="400"/>
-</p>
+![screenshot](https://raw.githubusercontent.com/jwnicholas99/rpi-rgb-led/master/media/app_top.gif)
 
 RPi RGB LED has a <b>graphical user interface</b> (GUI) for easy visualization. It also has <b>pre-defined LED patterns</b> which you can quickly <b>chain together</b> to create your own sequences.
 
@@ -46,14 +44,12 @@ There are 5 pre-defined LED patterns:
 5. Rainbow Chase
 
 #### Construct Your Own
-To make even more awesome LED sequences, there is an option to construct your own sequences by chaining together the above pre-defined LED patterns. All you have to do is click a button to add the pre-defined LED pattern to your own LED sequence. 
+To make even more awesome LED sequences, you can construct your own sequences by chaining together the above pre-defined LED patterns. All you have to do is click the "Add to Construction" button to add the pre-defined LED pattern to your own LED sequence. 
 
 #### GUI App
-When you want to create a color sequence, you can use a color picker to visually choose the color you want, rather than finding hex codes like '#808000' through trial and error.
+To create a color sequence, you can use a color picker to visually choose the color you want, rather than fumbling for hex codes.
 
 After picking the color, the LED strip will immediately display the chosen color sequence so that you can instant feedback.
-
-Finally, the app makes it easy to chain patterns together by adding your chosen LED patterns to the construction page.
 
 ## Usage
 ```
@@ -75,7 +71,7 @@ There are two simple parts to the set-up: wiring the circuit and installing requ
 #### Wiring the Circuit
 
 You only need the following hardware:
-* Raspberry Pi 4B
+* Raspberry Pi 3/4
 * WS2812 or SK6812 RGB LED strip
 * Three jumper wires
 
