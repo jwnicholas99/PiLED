@@ -90,6 +90,7 @@ $ sudo pip3 install rpi_ws281x
 $ sudo pip3 install tkinter
 $ sudo pip3 install ttkthemes
 $ sudo pip3 install tkcolorpicker
+$ git clone https://github.com/jwnicholas99/rpi-rgb-led.git
 ```
 
 ## Credits
