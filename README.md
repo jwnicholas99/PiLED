@@ -26,7 +26,7 @@
 </p>
 
 <p align="center">
-<img src="media/app_top.gif" width="1178" height="500"/>
+<img src="media/app_top.gif" width="1178" height="400"/>
 </p>
 
 RPi RGB LED has a <b>graphical user interface</b> (GUI) for easy visualization. It also has <b>pre-defined LED patterns</b> which you can quickly <b>chain together</b> to create your own sequences.
