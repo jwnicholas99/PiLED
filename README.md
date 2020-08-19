@@ -4,7 +4,19 @@
   <br>
 </h1>
 
-<h4 align="center">Point and click. Instant feedback. Effortless chaining.</h4>
+<h4 align="center">Point and click. Instant feedback. Construct what you want.</h4>
+
+<p align="center">
+  <a href="https://opensource.org/licenses/MIT">
+    <img src="https://img.shields.io/badge/License-MIT-green.svg"
+         alt="License">
+  </a>
+  <a href="https://github.com/jwnicholas99/rpi-rgb-led/releases/">
+    <img src="https://img.shields.io/github/v/release/jwnicholas99/rpi-rgb-led"
+         alt="License">
+  </a>
+</p>
+
 <p align="center">
   <a href="#key-features">Key Features</a> •
   <a href="#usage">Usage</a> •
@@ -14,18 +26,18 @@
 </p>
 
 <p align="center">
-<img src="media/app_top.gif" width="589" height="250"/>
+<img src="media/app_top.gif" width="1178" height="500"/>
 </p>
 
-RPi RGB LED has a graphical user interface (GUI) for easy visualization. It also has pre-defined LED patterns which you can quickly chain together to create your own sequences.
+RPi RGB LED has a <b>graphical user interface</b> (GUI) for easy visualization. It also has <b>pre-defined LED patterns</b> which you can quickly <b>chain together</b> to create your own sequences.
 
 ## Key Features
 There are three key features: 
-1. Pre-defined LED patterns like `pulse` and `wave`
-2. Easy chaining
-3. GUI app which provides instant feedback as you are building your LED sequences
+1. Pre-defined LED patterns
+2. Construct your own sequence
+3. GUI app which provides instant feedback
 
-### Pre-defined LED Patterns
+#### Pre-defined LED Patterns
 There are 5 pre-defined LED patterns:
 1. Color Wipe
 2. Pulse
@@ -33,10 +45,10 @@ There are 5 pre-defined LED patterns:
 4. Rainbow Cycle
 5. Rainbow Chase
 
-### Easy Chaining
+#### Construct Your Own
 To make even more awesome LED sequences, there is an option to construct your own sequences by chaining together the above pre-defined LED patterns. All you have to do is click a button to add the pre-defined LED pattern to your own LED sequence. 
 
-### GUI App
+#### GUI App
 When you want to create a color sequence, you can use a color picker to visually choose the color you want, rather than finding hex codes like '#808000' through trial and error.
 
 After picking the color, the LED strip will immediately display the chosen color sequence so that you can instant feedback.
@@ -60,7 +72,7 @@ Options:
 
 There are two simple parts to the set-up: wiring the circuit and installing required Python packages.
 
-### Wiring the Circuit
+#### Wiring the Circuit
 
 You only need the following hardware:
 * Raspberry Pi 4B
@@ -69,8 +81,11 @@ You only need the following hardware:
 
 Connect them according to the diagram below:
 
+<p align="center">
+<img src="media/circuit.png" width="450"/>
+</p>
 
-### Installing
+#### Installing
 
 Install the following packages:
 
