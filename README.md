@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  🌈 RPi RGB LED 
+  🌈 PiLED
   <br>
 </h1>
 
@@ -27,7 +27,7 @@
 
 ![screenshot](https://raw.githubusercontent.com/jwnicholas99/rpi-rgb-led/master/media/app_top.gif)
 
-RPi RGB LED has a <b>graphical user interface</b> (GUI) for easy visualization. It also has <b>pre-defined LED patterns</b> which you can quickly <b>chain together</b> to create your own sequences.
+PiLED has a <b>graphical user interface</b> (GUI) to easily control a RGB LED strip. It also has <b>pre-defined LED patterns</b> which you can quickly <b>chain together</b> to create your own sequences.
 
 ## Key Features
 There are three key features: 
@@ -90,7 +90,7 @@ $ sudo pip3 install rpi_ws281x
 $ sudo pip3 install tkinter
 $ sudo pip3 install ttkthemes
 $ sudo pip3 install tkcolorpicker
-$ git clone https://github.com/jwnicholas99/rpi-rgb-led.git
+$ git clone https://github.com/jwnicholas99/PiLED.git
 ```
 
 ## Credits
