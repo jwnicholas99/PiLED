@@ -1,3 +1,4 @@
+import os
 import copy
 import tkinter as tk
 from tkcolorpicker import askcolor
@@ -380,5 +381,8 @@ def convert_input(input, input_type, param_name, correct_type):
         output = types[input_type](input)
         return output
     except:
-        messagebox.showerror("Invalid input", param_name + " needs to be " + correct_type)
+        if os.environ.get('DISPLAY','') == '':
+            print(param_name + " needs to be " + correct_type)
+        else:
+            messagebox.showerror("Invalid input", param_name + " needs to be " + correct_type)
         return None
