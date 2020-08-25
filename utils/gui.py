@@ -230,87 +230,43 @@ class GUI():
         iterations_entry.pack(side=tk.LEFT)
         return iterations_entry
 
-    def convert_input(self, input, input_type, param_name, correct_type):
-        def convert_bool(input):
-            if input != "True" and input != "False":
-                raise TypeError()
-            return input
-
-        def convert_int(input):
-            output = int(input)
-            if output < 0:
-                raise TypeError()
-            return output
-
-        def convert_float(input):
-            output = float(input)
-            if output < 0.0:
-                raise TypeError()
-            return output
-
-        def convert_intensity(input):
-            output = int(input)
-            if output < 0 or output > 255:
-                raise TypeError()
-            return output
-
-        def convert_color(input):
-            if not len(input):
-                raise TypeError()
-            return input
-
-        types = {
-            "int": convert_int,
-            "float": convert_float,
-            "bool": convert_bool,
-            "intensity": convert_intensity,
-            "color": convert_color
-        }
-
-        try:
-            output = types[input_type](input)
-            return output
-        except:
-            messagebox.showerror("Invalid input", param_name + " needs to be " + correct_type)
-            return None
-
     def color_wipe(self, sequence, iterations, wait_ms):
-        sequence = self.convert_input(sequence, "color", "Color Wipe color sequence", "a non-empty list")
-        iterations = self.convert_input(iterations, "int", "Color Wipe iterations", "a positive int")
-        wait_ms = self.convert_input(wait_ms, "float", "Color Wipe wait_ms", "a positive float")
+        sequence = convert_input(sequence, "color", "Color Wipe color sequence", "a non-empty list")
+        iterations = convert_input(iterations, "int", "Color Wipe iterations", "a positive int")
+        wait_ms = convert_input(wait_ms, "float", "Color Wipe wait_ms", "a positive float")
         if any([arg is None for arg in [sequence, iterations, wait_ms]]):
             return
         self.moodlights.color_wipe(sequence, iterations, wait_ms)
 
     def wave(self, sequence, iterations, intensity, wait_ms, spread, is_reverse):
-        sequence = self.convert_input(sequence, "color", "Wave color sequence", "a non-empty list")
-        iterations = self.convert_input(iterations, "int", "Wave iterations", "a positive int")
-        intensity = self.convert_input(intensity, "intensity", "Wave intensity", "a positive int between 0 and 255")
-        wait_ms = self.convert_input(wait_ms, "float", "Wave wait_ms", "a positive float")
-        spread = self.convert_input(spread, "int", "Wave spread", "a positive int")
-        is_reverse = self.convert_input(is_reverse, "bool", "Wave is_reverse", "a 'True' or 'False'")
+        sequence = convert_input(sequence, "color", "Wave color sequence", "a non-empty list")
+        iterations = convert_input(iterations, "int", "Wave iterations", "a positive int")
+        intensity = convert_input(intensity, "intensity", "Wave intensity", "a positive int between 0 and 255")
+        wait_ms = convert_input(wait_ms, "float", "Wave wait_ms", "a positive float")
+        spread = convert_input(spread, "int", "Wave spread", "a positive int")
+        is_reverse = convert_input(is_reverse, "bool", "Wave is_reverse", "a 'True' or 'False'")
         if any([arg is None for arg in [sequence, iterations, intensity, wait_ms, spread, is_reverse]]):
             return
         is_reverse = is_reverse == 'True'
         self.moodlights.wave(sequence, iterations, intensity, wait_ms, spread, is_reverse)
 
     def pulse(self, iterations, wait_ms):
-        iterations = self.convert_input(iterations, "int", "Pulse iterations", "a positive int")
-        wait_ms = self.convert_input(wait_ms, "float", "Pulse wait_ms", "a positive float")
+        iterations = convert_input(iterations, "int", "Pulse iterations", "a positive int")
+        wait_ms = convert_input(wait_ms, "float", "Pulse wait_ms", "a positive float")
         if any([arg is None for arg in [iterations, wait_ms]]):
             return
         self.moodlights.pulse(iterations, wait_ms)
 
     def rainbow_cycle(self, iterations, wait_ms):
-        iterations = self.convert_input(iterations, "int", "Rainbow Cycle iterations", "a positive int")
-        wait_ms = self.convert_input(wait_ms, "float", "Rainbow Cycle wait_ms", "a positive float")
+        iterations = convert_input(iterations, "int", "Rainbow Cycle iterations", "a positive int")
+        wait_ms = convert_input(wait_ms, "float", "Rainbow Cycle wait_ms", "a positive float")
         if any([arg is None for arg in [iterations, wait_ms]]):
             return
         self.moodlights.rainbow_cycle(iterations, wait_ms)
 
     def rainbow_chase(self, iterations, wait_ms):
-        iterations = self.convert_input(iterations, "int", "Rainbow Chase iterations", "a positive int")
-        wait_ms = self.convert_input(wait_ms, "float", "Rainbow Chase wait_ms", "a positive float")
+        iterations = convert_input(iterations, "int", "Rainbow Chase iterations", "a positive int")
+        wait_ms = convert_input(wait_ms, "float", "Rainbow Chase wait_ms", "a positive float")
         if any([arg is None for arg in [iterations, wait_ms]]):
             return
         self.moodlights.rainbow_chase(iterations, wait_ms)
@@ -382,3 +338,47 @@ class GUI():
         canvas.create_window((400,0), window=inner_frame, anchor="n")
 
         return inner_frame
+
+def convert_input(input, input_type, param_name, correct_type):
+    def convert_bool(input):
+        if input != "True" and input != "False":
+            raise TypeError()
+        return input
+
+    def convert_int(input):
+        output = int(input)
+        if output < 0:
+            raise TypeError()
+        return output
+
+    def convert_float(input):
+        output = float(input)
+        if output < 0.0:
+            raise TypeError()
+        return output
+
+    def convert_intensity(input):
+        output = int(input)
+        if output < 0 or output > 255:
+            raise TypeError()
+        return output
+
+    def convert_color(input):
+        if not len(input):
+            raise TypeError()
+        return input
+
+    types = {
+        "int": convert_int,
+        "float": convert_float,
+        "bool": convert_bool,
+        "intensity": convert_intensity,
+        "color": convert_color
+    }
+
+    try:
+        output = types[input_type](input)
+        return output
+    except:
+        messagebox.showerror("Invalid input", param_name + " needs to be " + correct_type)
+        return None

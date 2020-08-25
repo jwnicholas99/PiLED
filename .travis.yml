@@ -1,0 +1,13 @@
+language: python
+python:
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8"
+install:
+  - sudo pip3 install rpi_ws281x
+  - sudo pip3 install ttkthemes
+  - sudo pip3 install tkcolorpicker
+script:
+  - python3 test.py
