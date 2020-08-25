@@ -7,6 +7,8 @@
 <h4 align="center">Point and click. Instant feedback. Construct what you want.</h4>
 
 <p align="center">
+  <img src="https://travis-ci.com/jwnicholas99/PiLED.svg?branch=master"
+         alt="Travis CI">
   <a href="https://opensource.org/licenses/MIT">
     <img src="https://img.shields.io/badge/License-MIT-green.svg"
          alt="License">
