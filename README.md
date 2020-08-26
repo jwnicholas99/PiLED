@@ -17,6 +17,9 @@
     <img src="https://img.shields.io/github/v/release/jwnicholas99/rpi-rgb-led"
          alt="License">
   </a>
+  <img src="https://img.shields.io/badge/contributions-welcome-orange.svg?style=flat"
+         alt="License">
+  
 </p>
 
 <p align="center">
@@ -89,6 +92,7 @@ Install the following packages:
 
 ```
 $ sudo apt-get install python3-tk
+$ sudo apt-get install python3-pil python3-pil.imagetk
 $ sudo pip3 install rpi_ws281x
 $ sudo pip3 install ttkthemes
 $ sudo pip3 install tkcolorpicker
